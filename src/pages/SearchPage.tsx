@@ -72,7 +72,7 @@ const SearchPage = () => {
   }
 
   if (!results?.data || !city) {
-    return <span>No results found</span>;
+    return <span>Không tìm thấy kết quả nào</span>;
   }
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
@@ -90,7 +90,7 @@ const SearchPage = () => {
         <SearchBar
           searchQuery={searchState.searchQuery}
           onSubmit={setSearchQuery}
-          placeHolder="Search by Cuisine or Restaurant Name"
+          placeHolder="Tìm kiếm theo Món ăn hoặc Tên nhà hàng"
           onReset={resetSearch}
         />
         <div className="flex justify-between flex-col gap-3 lg:flex-row">

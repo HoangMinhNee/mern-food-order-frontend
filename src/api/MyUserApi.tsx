@@ -58,7 +58,7 @@ export const useCreateMyUser = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to create user");
+      throw new Error("Không tạo được người dùng");
     }
   };
 
@@ -100,7 +100,7 @@ export const useUpdateMyUser = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to update user");
+      throw new Error("Không cập nhật được người dùng");
     }
   };
 
@@ -113,7 +113,7 @@ export const useUpdateMyUser = () => {
   } = useMutation(updateMyUserRequest);
 
   if (isSuccess) {
-    toast.success("User profile updated!");
+    toast.success("Hồ sơ người dùng đã được cập nhật!");
   }
 
   if (error) {

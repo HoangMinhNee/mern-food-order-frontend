@@ -10,7 +10,7 @@ const UserProfilePage = () => {
   }
 
   if (!currentUser) {
-    return <span>Unable to load user profile</span>;
+    return <span>Không thể tải hồ sơ người dùng</span>;
   }
 
   return (

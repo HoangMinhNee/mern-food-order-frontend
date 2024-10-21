@@ -18,7 +18,7 @@ export const useGetMyOrders = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to get orders");
+      throw new Error("Không nhận được đơn hàng");
     }
 
     return response.json();
@@ -26,12 +26,15 @@ export const useGetMyOrders = () => {
 
   const { data: orders, isLoading } = useQuery(
     "fetchMyOrders",
-    getMyOrdersRequest
+    getMyOrdersRequest,
+    {
+      refetchInterval: 5000,
+    }
   );
   return { orders, isLoading };
 };
 
-type CheckoutSessionRequest = {
+type CreateOrderRequest = {
   cartItems: {
     menuItemId: string;
     name: string;
@@ -46,39 +49,34 @@ type CheckoutSessionRequest = {
   restaurantId: string;
 };
 
-export const useCreateCheckoutSession = () => {
+export const useCreateOrder = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const createCheckoutSessionRequest = async (
-    checkoutSessionRequest: CheckoutSessionRequest
-  ) => {
+  const createOrderRequest = async (createOrderRequest: CreateOrderRequest) => {
     const accessToken = await getAccessTokenSilently();
 
-    const response = await fetch(
-      `${API_BASE_URL}/api/order/checkout/create-checkout-session`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(checkoutSessionRequest),
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/api/order/create`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(createOrderRequest),
+    });
 
     if (!response.ok) {
-      throw new Error("Unable to create checkout session");
+      throw new Error("Không thể tạo đơn hàng");
     }
 
     return response.json();
   };
 
   const {
-    mutateAsync: createCheckoutSession,
+    mutateAsync: createOrder,
     isLoading,
     error,
     reset,
-  } = useMutation(createCheckoutSessionRequest);
+  } = useMutation(createOrderRequest);
 
   if (error) {
     toast.error(error.toString());
@@ -86,7 +84,7 @@ export const useCreateCheckoutSession = () => {
   }
 
   return {
-    createCheckoutSession,
+    createOrder,
     isLoading,
   };
 };

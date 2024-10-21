@@ -13,15 +13,15 @@ type Props = {
 
 const SORT_OPTION = [
   {
-    label: "Best match",
+    label: "Phù hợp nhất",
     value: "bestMatch",
   },
   {
-    label: "Delivery price",
+    label: "Phí vận chuyển",
     value: "deliveryPrice",
   },
   {
-    label: "Estimated delivery time",
+    label: "Thời gian giao hàng",
     value: "estimatedDeliveryTime",
   },
 ];
@@ -34,7 +34,7 @@ const SortOptionDropdown = ({ onChange, sortOption }: Props) => {
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer">
         <Button variant="outline" className="w-full">
-          Sort by: {selectedSortLabel}
+          Xếp theo: {selectedSortLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

@@ -15,36 +15,38 @@ import { useEffect } from "react";
 const formSchema = z
   .object({
     restaurantName: z.string({
-      required_error: "restaurant name is required",
+      required_error: "Tên nhà hàng là bắt buộc",
     }),
     city: z.string({
-      required_error: "city is required",
+      required_error: "Thành phố là bắt buộc",
     }),
     country: z.string({
-      required_error: "country is required",
+      required_error: "Quốc gia là bắt buộc",
     }),
     deliveryPrice: z.coerce.number({
-      required_error: "delivery price is required",
-      invalid_type_error: "must be a valid number",
+      required_error: "Phí giao hàng là bắt buộc",
+      invalid_type_error: "Phải là một số hợp lệ",
     }),
     estimatedDeliveryTime: z.coerce.number({
-      required_error: "estimated delivert time is required",
-      invalid_type_error: "must be a valid number",
+      required_error: "Thời gian giao hàng ước tính là bắt buộc",
+      invalid_type_error: "Phải là một số hợp lệ",
     }),
     cuisines: z.array(z.string()).nonempty({
-      message: "please select at least one item",
+      message: "Vui lòng chọn ít nhất một mục",
     }),
     menuItems: z.array(
       z.object({
-        name: z.string().min(1, "name is required"),
-        price: z.coerce.number().min(1, "price is required"),
+        name: z.string().min(1, "Tên là bắt buộc"),
+        price: z.coerce.number().min(1, "Giá là bắt buộc"),
       })
     ),
     imageUrl: z.string().optional(),
-    imageFile: z.instanceof(File, { message: "image is required" }).optional(),
+    imageFile: z
+      .instanceof(File, { message: "Hình ảnh là bắt buộc" })
+      .optional(),
   })
   .refine((data) => data.imageUrl || data.imageFile, {
-    message: "Either image URL or image File must be provided",
+    message: "Phải cung cấp URL hình ảnh hoặc Tệp hình ảnh",
     path: ["imageFile"],
   });
 
@@ -70,13 +72,13 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
       return;
     }
 
-    const deliveryPriceFormatted = parseInt(
-      (restaurant.deliveryPrice / 100).toFixed(2)
+    const deliveryPriceFormatted = parseFloat(
+      restaurant.deliveryPrice.toString()
     );
 
     const menuItemsFormatted = restaurant.menuItems.map((item) => ({
       ...item,
-      price: parseInt((item.price / 100).toFixed(2)),
+      price: parseInt(item.price.toString()),
     }));
 
     const updatedRestaurant = {
@@ -95,10 +97,7 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     formData.append("restaurantName", formDataJson.restaurantName);
     formData.append("city", formDataJson.city);
     formData.append("country", formDataJson.country);
-    formData.append(
-      "deliveryPrice",
-      (formDataJson.deliveryPrice * 100).toString()
-    );
+    formData.append("deliveryPrice", formDataJson.deliveryPrice.toString());
     formData.append(
       "estimatedDeliveryTime",
       formDataJson.estimatedDeliveryTime.toString()
@@ -108,10 +107,7 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     });
     formDataJson.menuItems.forEach((menuItem, index) => {
       formData.append(`menuItems[${index}][name]`, menuItem.name);
-      formData.append(
-        `menuItems[${index}][price]`,
-        (menuItem.price * 100).toString()
-      );
+      formData.append(`menuItems[${index}][price]`, menuItem.price.toString());
     });
 
     if (formDataJson.imageFile) {
@@ -133,7 +129,11 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
         <MenuSection />
         <Separator />
         <ImageSection />
-        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
+        {isLoading ? (
+          <LoadingButton />
+        ) : (
+          <Button type="submit">Cập Nhật</Button>
+        )}
       </form>
     </Form>
   );

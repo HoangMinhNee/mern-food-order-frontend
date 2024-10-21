@@ -10,7 +10,7 @@ const MainNav = () => {
       {isAuthenticated ? (
         <>
           <Link to="/order-status" className="font-bold hover:text-orange-500">
-            Order Status
+            Trạng Thái Đơn Hàng
           </Link>
           <UsernameMenu />
         </>
@@ -20,7 +20,7 @@ const MainNav = () => {
           className="font-bold hover:text-orange-500 hover:bg-white"
           onClick={async () => await loginWithRedirect()}
         >
-          Log In
+          Đăng Nhập
         </Button>
       )}
     </span>

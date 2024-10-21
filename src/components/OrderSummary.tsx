@@ -19,14 +19,14 @@ const OrderSummary = ({ restaurant, cartItems, removeFormCart }: Props) => {
 
     const totalWithDelivery = totalInPence + restaurant.deliveryPrice;
 
-    return (totalWithDelivery / 100).toFixed(2);
+    return totalWithDelivery.toLocaleString("vi-VN");
   };
   return (
     <>
-      <CardHeader>
+      <CardHeader className="px-5">
         <CardTitle className="text-2xl font-bold tracking-tight flex justify-between">
-          <span>Your Order</span>
-          <span>${getTotalCost()}</span>
+          <span>Đơn Hàng Của Bạn</span>
+          <span>{getTotalCost()} đ</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
@@ -45,14 +45,14 @@ const OrderSummary = ({ restaurant, cartItems, removeFormCart }: Props) => {
                 color="red"
                 size={20}
               />
-              ${((item.price * item.quantity) / 100).toFixed(2)}
+              {(item.price * item.quantity).toLocaleString("vi-VN")} đ
             </span>
           </div>
         ))}
         <Separator />
         <div className="flex justify-between">
-          <span>Delivery</span>
-          <span>${(restaurant.deliveryPrice / 100).toFixed(2)}</span>
+          <span>Phí vận chuyển</span>
+          <span>{restaurant.deliveryPrice.toLocaleString("vi-VN")} đ</span>
         </div>
         <Separator />
       </CardContent>

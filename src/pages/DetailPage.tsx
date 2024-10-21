@@ -1,4 +1,4 @@
-import { useCreateCheckoutSession } from "@/api/OrderApi";
+import { useCreateOrder } from "@/api/OrderApi";
 import { useGetRestaurant } from "@/api/RestaurantApi";
 import CheckoutButton from "@/components/CheckoutButton";
 import MenuItems from "@/components/MenuItems";
@@ -9,7 +9,8 @@ import { Card, CardFooter } from "@/components/ui/card";
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { MenuItem } from "@/types";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export type CartItem = {
   _id: string;
@@ -21,8 +22,8 @@ export type CartItem = {
 const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
-  const { createCheckoutSession, isLoading: isCheckoutLoading } =
-    useCreateCheckoutSession();
+  const { createOrder, isLoading: isOrderLoading } = useCreateOrder();
+  const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
@@ -56,7 +57,7 @@ const DetailPage = () => {
       }
 
       sessionStorage.setItem(
-        `cartItems=${restaurantId}`,
+        `cartItems-${restaurantId}`,
         JSON.stringify(updateCartItems)
       );
       return updateCartItems;
@@ -68,6 +69,10 @@ const DetailPage = () => {
       const updateCartItems = prevCartItems.filter(
         (item) => cartItem._id !== item._id
       );
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updateCartItems)
+      );
       return updateCartItems;
     });
   };
@@ -77,7 +82,7 @@ const DetailPage = () => {
       return;
     }
 
-    const checkoutData = {
+    const orderData = {
       cartItems: cartItems.map((cartItem) => ({
         menuItemId: cartItem._id,
         name: cartItem.name,
@@ -93,13 +98,19 @@ const DetailPage = () => {
       },
     };
 
-    const data = await createCheckoutSession(checkoutData);
-    window.location.href = data.url;
+    try {
+      await createOrder(orderData);
+      toast.success("Đơn hàng đã được tạo thành công!");
+      navigate("/order-status");
+    } catch (error) {
+      toast.error("Không tạo được đơn hàng");
+    }
   };
 
   if (isLoading || !restaurant) {
     return "Loading...";
   }
+
   return (
     <div className="flex flex-col gap-10">
       <AspectRatio ratio={16 / 5}>
@@ -114,6 +125,7 @@ const DetailPage = () => {
           <span className="text-2xl font-bold tracking-tight">Menu</span>
           {restaurant.menuItems.map((menuItem) => (
             <MenuItems
+              key={menuItem._id}
               menuItem={menuItem}
               addToCart={() => addToCart(menuItem)}
             />
@@ -130,7 +142,7 @@ const DetailPage = () => {
               <CheckoutButton
                 disabled={cartItems.length === 0}
                 onCheckout={onCheckout}
-                isLoading={isCheckoutLoading}
+                isLoading={isOrderLoading}
               />
             </CardFooter>
           </Card>

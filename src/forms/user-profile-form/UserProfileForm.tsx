@@ -38,8 +38,8 @@ const UserProfileForm = ({
   onSave,
   isLoading,
   currentUser,
-  title = "User Profile",
-  buttonText = "Submit",
+  title = "Hồ Sơ Người Dùng",
+  buttonText = "Cập Nhật",
 }: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
@@ -59,7 +59,7 @@ const UserProfileForm = ({
         <div>
           <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
-            View and change your profile infomation here
+            Xem và thay đổi thông tin hồ sơ của bạn tại đây
           </FormDescription>
         </div>
         <FormField
@@ -79,7 +79,7 @@ const UserProfileForm = ({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Tên</FormLabel>
               <FormControl>
                 <Input {...field} className="bg-white" />
               </FormControl>
@@ -93,7 +93,7 @@ const UserProfileForm = ({
             name="addressLine1"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Address Line 1</FormLabel>
+                <FormLabel>Số nhà, tên đường</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>
@@ -106,7 +106,7 @@ const UserProfileForm = ({
             name="city"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>City</FormLabel>
+                <FormLabel>Thành phố</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>
@@ -119,7 +119,7 @@ const UserProfileForm = ({
             name="country"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Country</FormLabel>
+                <FormLabel>Quốc gia</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>

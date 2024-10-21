@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 const formSchema = z.object({
   searchQuery: z.string({
-    required_error: "Reataurant name is required",
+    required_error: "Cần nhập tên ngân hàng để thực hiện",
   }),
 });
 
@@ -76,10 +76,10 @@ const SearchBar = ({ onSubmit, onReset, placeHolder, searchQuery }: Props) => {
           variant="outline"
           className="rounded-full"
         >
-          Reset
+          Làm Mới
         </Button>
         <Button type="submit" className="rounded-full bg-orange-500">
-          Search
+          Tìm Kiếm
         </Button>
       </form>
     </Form>

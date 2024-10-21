@@ -32,12 +32,12 @@ const CuisinesFilter = ({
   return (
     <>
       <div className="flex justify-between items-center px-2">
-        <div className="text-md font-semibold mb-2">Filter By Cuisine</div>
+        <div className="text-md font-semibold mb-2">Lọc Theo Món Ăn</div>
         <div
           onClick={handleCuisinesReset}
           className="text-sm font-semibold mb-2 underline cursor-pointer text-blue-500"
         >
-          Reset Filters
+          Làm Mới Bộ Lọc
         </div>
       </div>
       <div className="space-y-2 flex flex-col">
@@ -76,12 +76,12 @@ const CuisinesFilter = ({
         >
           {isExpanded ? (
             <span className="flex flex-row items-center">
-              View Less <ChevronUp />
+              Xem Ít Hơn <ChevronUp />
             </span>
           ) : (
             <span className="flex flex-row items-center">
               {" "}
-              View More <ChevronDown />
+              Xem Thêm <ChevronDown />
             </span>
           )}
         </Button>

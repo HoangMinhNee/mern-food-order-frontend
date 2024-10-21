@@ -13,13 +13,6 @@ export type MenuItem = {
   price: number;
 };
 
-export type OrderStatus =
-  | "placed"
-  | "paid"
-  | "inProgress"
-  | "outForDelivery"
-  | "delivered";
-
 export type Restaurant = {
   _id: string;
   user: string;
@@ -33,6 +26,13 @@ export type Restaurant = {
   imageUrl: string;
   lastUpdated: string;
 };
+
+export type OrderStatus =
+  | "placed"
+  | "paid"
+  | "inProgress"
+  | "outForDelivery"
+  | "delivered";
 
 export type Order = {
   _id: string;
